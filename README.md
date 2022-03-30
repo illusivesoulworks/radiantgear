@@ -7,6 +7,10 @@ and dynamic light mods. With this mod, items in curios slots will inherit the dy
 dynamic lighting mod. As an example, if a held torch would provide dynamic lighting, then installing this mod will cause
 torches placed in curios slots to also provide dynamic lighting.
 
+**Please note: This mod does NOT add any content or slots on its own. In order to gain more slots or assign items into
+slots, users will need to either add a mod that adds that kind of content or add it themselves through the Curios
+API configuration and datapacks [as shown in this guide](https://github.com/TheIllusiveC4/Curios/wiki/How-to-Use:-Users).**
+
 **Compatible Mods**
 - [Dynamic Lights](https://www.curseforge.com/minecraft/mc-mods/dynamic-lights)
 - [Lucent](https://www.curseforge.com/minecraft/mc-mods/lucent)
