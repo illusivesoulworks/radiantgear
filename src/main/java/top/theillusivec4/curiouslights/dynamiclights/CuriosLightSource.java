@@ -25,19 +25,18 @@ import atomicstryker.dynamiclights.server.DynamicLights;
 import atomicstryker.dynamiclights.server.GsonConfig;
 import atomicstryker.dynamiclights.server.IDynamicLightSource;
 import atomicstryker.dynamiclights.server.ItemConfigHelper;
+import atomicstryker.dynamiclights.server.ItemLightLevels;
 import atomicstryker.dynamiclights.server.modules.LightConfig;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.Mth;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.server.ServerAboutToStartEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -57,11 +56,12 @@ public class CuriosLightSource {
   @SubscribeEvent
   public void serverStartEvent(ServerAboutToStartEvent evt) {
     LightConfig defaultConfig = new LightConfig();
-    String torchString = ItemConfigHelper.fromItemStack(new ItemStack(Blocks.TORCH));
-    defaultConfig.getItemsList().add(torchString);
     defaultConfig.getItemsList()
-        .add(ItemConfigHelper.fromItemStack(new ItemStack(Blocks.GLOWSTONE)));
-    defaultConfig.getNotWaterProofList().add(torchString);
+        .add(ItemConfigHelper.fromItemStack(new ItemStack(Blocks.TORCH), 14));
+    defaultConfig.getItemsList()
+        .add(ItemConfigHelper.fromItemStack(new ItemStack(Blocks.GLOWSTONE), 15));
+    defaultConfig.getNotWaterProofList()
+        .add(ItemConfigHelper.fromItemStack(new ItemStack(Blocks.TORCH), 0));
     MinecraftServer server = evt.getServer();
     File configFile = new File(server.getFile(""),
         File.separatorChar + "config" + File.separatorChar + "dynamiclights_selflight.cfg");
@@ -96,15 +96,17 @@ public class CuriosLightSource {
         playerLightsMap.put(player, curiosLightSourceContainer);
       }
       int prevLight = curiosLightSourceContainer.lightLevel;
+      boolean isUnderwater = checkPlayerWater(player);
       curiosLightSourceContainer.lightLevel = 0;
       CuriosLightSourceContainer finalCuriosLightSourceContainer = curiosLightSourceContainer;
       CuriosApi.getCuriosHelper().getEquippedCurios(player).ifPresent(curios -> {
         for (int i = 0; i < curios.getSlots(); i++) {
           ItemStack stack = curios.getStackInSlot(i);
 
-          if (!checkPlayerWater(player) || !notWaterProofItems.contains(stack)) {
+          if (!stack.isEmpty()) {
             finalCuriosLightSourceContainer.lightLevel =
-                Math.max(finalCuriosLightSourceContainer.lightLevel, getLightFromItemStack(stack));
+                Math.max(finalCuriosLightSourceContainer.lightLevel,
+                    getLightFromItemStack(stack, isUnderwater));
           }
         }
       });
@@ -128,24 +130,22 @@ public class CuriosLightSource {
     }
   }
 
-  private boolean checkPlayerWater(Player pPlayer) {
-
-    if (pPlayer.isInWater()) {
-      int x = Mth.floor(pPlayer.getX() + 0.5D);
-      int y = Mth.floor(pPlayer.getY() + pPlayer.getEyeHeight());
-      int z = Mth.floor(pPlayer.getZ() + 0.5D);
-      BlockState is = pPlayer.level.getBlockState(new BlockPos(x, y, z));
-      return is.getMaterial().isLiquid();
-    }
-    return false;
+  private boolean checkPlayerWater(Player player) {
+    return player.isEyeInFluid(FluidTags.WATER);
   }
 
-  private int getLightFromItemStack(ItemStack stack) {
+  private int getLightFromItemStack(ItemStack stack, boolean isUnderwater) {
 
-    if (itemsMap.contains(stack)) {
-      return 15;
+    if (isUnderwater && (notWaterProofItems.getLightLevel(stack) > 0 ||
+        stack.getTags().anyMatch(rl -> rl.location().equals(DynamicLights.NOT_WATERPROOF_TAG)))) {
+      return 0;
     }
-    return 0;
+    int level = ItemLightLevels.getLightFromItemStack(stack, "self");
+
+    if (level > 0 && level <= 15) {
+      return level;
+    }
+    return itemsMap.getLightLevel(stack);
   }
 
   private void enableLight(CuriosLightSourceContainer container) {
