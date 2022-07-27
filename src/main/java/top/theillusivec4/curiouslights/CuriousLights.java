@@ -30,6 +30,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.NetworkConstants;
 import top.theillusivec4.curiouslights.dynamiclights.DynamicLightsModule;
+import top.theillusivec4.curiouslights.dynamiclightsreforged.DynamicLightsReforgedModule;
 
 @Mod(CuriousLights.MOD_ID)
 public class CuriousLights {
@@ -37,9 +38,11 @@ public class CuriousLights {
   public static final String MOD_ID = "curiouslights";
 
   private static boolean isDynamicLightsLoaded = false;
+  private static boolean isDynamicLightsReforgedLoaded = false;
 
   public CuriousLights() {
     isDynamicLightsLoaded = ModList.get().isLoaded("dynamiclights");
+    isDynamicLightsReforgedLoaded = ModList.get().isLoaded("dynamiclightsreforged");
     FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
     ModLoadingContext context = ModLoadingContext.get();
     context.registerExtensionPoint(IExtensionPoint.DisplayTest.class,
@@ -51,6 +54,8 @@ public class CuriousLights {
 
     if (isDynamicLightsLoaded) {
       DynamicLightsModule.setup();
+    } else if (isDynamicLightsReforgedLoaded) {
+      DynamicLightsReforgedModule.setup();
     }
   }
 

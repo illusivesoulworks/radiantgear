@@ -85,6 +85,7 @@ dependencies {
 
     implementation fg.deobf("curse.maven:dynamiclights-227874:${dynamiclights_file}")
     compileOnly fg.deobf("com.legacy:lucent:${lucent_version}")
+    implementation fg.deobf("curse.maven:dynamiclights-reforged-${dynamiclights_reforged_project}:${dynamiclights_reforged_file}")
 }
 
 def replaceResources = tasks.register("replaceResources", Copy) {
@@ -146,6 +147,7 @@ curseforge {
             requiredDependency 'curios'
             optionalDependency 'lucent'
             optionalDependency 'dynamic-lights'
+            optionalDependency 'dynamiclights-reforged'
         }
     }
 }
