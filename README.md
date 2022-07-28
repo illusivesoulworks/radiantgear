@@ -14,6 +14,7 @@ API configuration and datapacks [as shown in this guide](https://github.com/TheI
 **Compatible Mods**
 - [Dynamic Lights](https://www.curseforge.com/minecraft/mc-mods/dynamic-lights)
 - [Lucent](https://www.curseforge.com/minecraft/mc-mods/lucent)
+- [Dynamic Lights Reforged](https://www.curseforge.com/minecraft/mc-mods/dynamiclights-reforged)
 
 Note: This mod's sidedness depends on the dynamic lighting mod used. For example, if using Lucent then this mod is
 client-side only because Lucent is client-side only. On the other hand, if using Dynamic Lights then this mod is
