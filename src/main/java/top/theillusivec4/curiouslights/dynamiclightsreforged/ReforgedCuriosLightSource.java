@@ -1,6 +1,5 @@
 package top.theillusivec4.curiouslights.dynamiclightsreforged;
 
-import dev.lambdaurora.lambdynlights.DynamicLightSource;
 import dev.lambdaurora.lambdynlights.api.item.ItemLightSources;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.player.Player;
@@ -8,14 +7,18 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
-import org.apache.commons.lang3.mutable.MutableInt;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import top.theillusivec4.curios.api.CuriosApi;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class ReforgedCuriosLightSource {
     private static final Logger LOGGER = LogManager.getLogger();
+    private final Map<Player, ReforgedCuriosLightSourceContainer> playerLightsMap =
+            new HashMap<>();
 
     @SubscribeEvent
     public void playerTick(TickEvent.PlayerTickEvent evt) {
@@ -24,14 +27,19 @@ public class ReforgedCuriosLightSource {
         }
 
         Player player = evt.player;
-        DynamicLightSource playerLight = (DynamicLightSource) player;
+        ReforgedCuriosLightSourceContainer lightSourceContainer = playerLightsMap.get(player);
 
         if (player.isAlive()) {
+            if (lightSourceContainer == null) {
+                LOGGER.trace("built new ReforgedCuriosLightSourceContainer for player {}", player);
+                lightSourceContainer = new ReforgedCuriosLightSourceContainer(player);
+                playerLightsMap.put(player, lightSourceContainer);
+            }
 
-            int prevLight = playerLight.tdv$getLuminance();
+            int prevLight = lightSourceContainer.lightLevel;
             boolean isUnderwater = checkPlayerWater(player);
-
-            MutableInt newLight = new MutableInt(0);
+            lightSourceContainer.lightLevel = 0;
+            ReforgedCuriosLightSourceContainer finalLightSourceContainer = lightSourceContainer;
 
             CuriosApi.getCuriosHelper().getEquippedCurios(player).ifPresent(
                 curios -> {
@@ -39,29 +47,28 @@ public class ReforgedCuriosLightSource {
                         ItemStack stack = curios.getStackInSlot(i);
 
                         if (!stack.isEmpty()) {
-                            newLight.setValue(
-                                    Math.max(newLight.getValue(),
-                                            getLightFromItemStack(stack, isUnderwater)
-                                    )
-                            );
+                            finalLightSourceContainer.lightLevel =
+                                Math.max(finalLightSourceContainer.lightLevel,
+                                        getLightFromItemStack(stack, isUnderwater)
+                                );
                         }
                     }
                 }
             );
 
-            if (prevLight != 0 && newLight.getValue() != prevLight) {
-                newLight.setValue(0);
+            if (prevLight != 0 && lightSourceContainer.lightLevel != prevLight) {
+                lightSourceContainer.lightLevel = 0;
             }
 
-            PlayerHelper.setLuminance(player, newLight.getValue());
-
-            if (!playerLight.tdv$isDynamicLightEnabled() && newLight.getValue() > 0) {
-                playerLight.tdv$setDynamicLightEnabled(true);
-            } else if (playerLight.tdv$isDynamicLightEnabled() && newLight.getValue() < 1) {
-                playerLight.tdv$setDynamicLightEnabled(false);
+            if (!lightSourceContainer.tdv$isDynamicLightEnabled() && lightSourceContainer.lightLevel > 0) {
+                lightSourceContainer.tdv$setDynamicLightEnabled(true);
+            } else if (lightSourceContainer.tdv$isDynamicLightEnabled() && lightSourceContainer.lightLevel < 1) {
+                lightSourceContainer.tdv$setDynamicLightEnabled(false);
             }
         } else {
-            playerLight.tdv$setDynamicLightEnabled(false);
+            if (lightSourceContainer != null) {
+                playerLightsMap.remove(player);
+            }
         }
     }
 
