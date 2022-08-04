@@ -22,35 +22,53 @@
 package top.theillusivec4.curiouslights;
 
 import java.util.Objects;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.IExtensionPoint;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.NetworkConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import top.theillusivec4.curiouslights.dynamiclights.DynamicLightsModule;
+import top.theillusivec4.curiouslights.dynamiclightsreforged.DLReforgedModule;
 
 @Mod(CuriousLights.MOD_ID)
 public class CuriousLights {
 
   public static final String MOD_ID = "curiouslights";
+  public static final Logger LOG = LoggerFactory.getLogger(MOD_ID);
 
   private static boolean isDynamicLightsLoaded = false;
+  private static boolean isDLReforgedLoaded = false;
 
   public CuriousLights() {
-    isDynamicLightsLoaded = ModList.get().isLoaded("dynamiclights");
-    FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+    ModList modList = ModList.get();
+    isDynamicLightsLoaded = modList.isLoaded("dynamiclights");
+    isDLReforgedLoaded = modList.isLoaded("dynamiclightsreforged");
+    IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+    eventBus.addListener(this::setup);
+    eventBus.addListener(this::clientSetup);
     ModLoadingContext context = ModLoadingContext.get();
     context.registerExtensionPoint(IExtensionPoint.DisplayTest.class,
         () -> new IExtensionPoint.DisplayTest(() -> getRemoteVersion(context),
             (incoming, isNetwork) -> acceptsServer(context, incoming)));
   }
 
-  private void setup(final FMLCommonSetupEvent event) {
+  private void setup(final FMLCommonSetupEvent evt) {
 
     if (isDynamicLightsLoaded) {
       DynamicLightsModule.setup();
+    }
+  }
+
+  private void clientSetup(final FMLClientSetupEvent evt) {
+
+    if (isDLReforgedLoaded) {
+      DLReforgedModule.setup();
     }
   }
 
