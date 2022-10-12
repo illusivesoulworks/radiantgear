@@ -75,7 +75,10 @@ repositories {
         name = "Modding Legacy Maven"
         url = "https://maven.moddinglegacy.com/artifactory/modding-legacy/"
     }
-
+    maven {
+        name = "Ars Nouveau"
+        url = "https://maven.blamejared.com"
+    }
 }
 
 dependencies {
@@ -83,9 +86,13 @@ dependencies {
 
     implementation fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
 
-    implementation fg.deobf("curse.maven:dlreforged-551736:${dlreforged_file}")
+    compileOnly fg.deobf("curse.maven:dlreforged-551736:${dlreforged_file}")
+    implementation fg.deobf("com.hollingsworth.ars_nouveau:ars_nouveau-1.18.2:${ars_version}")
     compileOnly fg.deobf("curse.maven:dynamiclights-227874:${dynamiclights_file}")
     compileOnly fg.deobf("com.legacy:lucent:${lucent_version}")
+
+    runtimeOnly fg.deobf("curse.maven:patchouli-306770:3846086")
+    runtimeOnly fg.deobf("curse.maven:geckolib-388172:4019764")
 }
 
 def replaceResources = tasks.register("replaceResources", Copy) {

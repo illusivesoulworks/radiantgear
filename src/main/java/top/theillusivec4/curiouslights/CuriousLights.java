@@ -33,6 +33,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.NetworkConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import top.theillusivec4.curiouslights.arsnouveau.ArsNouveauModule;
 import top.theillusivec4.curiouslights.dynamiclights.DynamicLightsModule;
 import top.theillusivec4.curiouslights.dynamiclightsreforged.DLReforgedModule;
 
@@ -44,11 +45,13 @@ public class CuriousLights {
 
   private static boolean isDynamicLightsLoaded = false;
   private static boolean isDLReforgedLoaded = false;
+  private static boolean isArsNouveauLoaded = false;
 
   public CuriousLights() {
     ModList modList = ModList.get();
     isDynamicLightsLoaded = modList.isLoaded("dynamiclights");
     isDLReforgedLoaded = modList.isLoaded("dynamiclightsreforged");
+    isArsNouveauLoaded = modList.isLoaded("ars_nouveau");
     IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
     eventBus.addListener(this::setup);
     eventBus.addListener(this::clientSetup);
@@ -69,6 +72,10 @@ public class CuriousLights {
 
     if (isDLReforgedLoaded) {
       DLReforgedModule.setup();
+    }
+
+    if (isArsNouveauLoaded) {
+      ArsNouveauModule.setup();
     }
   }
 
