@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - Added Fabric support
 - Added LambDynamicLights support
 ### Changed
+- Updated to [MultiLoader template](https://github.com/jaredlll08/MultiLoader-Template)
 - Updated to Minecraft 1.19
 - [Forge] Updated to Forge 41+
 - [Fabric] Updated to Fabric API 0.62.0+
