@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "version": "${version}",
+  "name": "${mod_name}",
+  "description": "${mod_description}",
+  "authors": [
+    "${mod_author}"
+  ],
+  "contact": {
+    "issues": "${issue_tracker}"
+  },
+  "license": "${license}",
+  "icon": "${mod_id}_icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "com.illusivesoulworks.radiantgear.RadiantGearFabricMod"
+    ]
+  },
+  "mixins": [],
+  "depends": {
+    "fabricloader": ">=0.14",
+    "fabric": "*",
+    "trinkets": ">=3.4.0",
+    "minecraft": "${fabric_mc_version_range}",
+    "java": ">=17"
+  }
+}

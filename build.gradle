@@ -1,160 +1,91 @@
-buildscript {
+subprojects {
+    
+    apply plugin: 'java'
+    
+    java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+    java.withSourcesJar()
+    java.withJavadocJar()
+        
+    jar {
+        from(rootProject.file("LICENSE"))
+        from(rootProject.file("COPYING"))
+        from(rootProject.file("COPYING.LESSER"))
+        from(rootProject.file("README.md"))
+        from(rootProject.file("CHANGELOG.md"))
+        manifest {
+            attributes([
+                'Specification-Title'     : mod_name,
+                'Specification-Vendor'    : mod_author,
+                'Specification-Version'   : project.jar.archiveVersion,
+                'Implementation-Title'    : project.name,
+                'Implementation-Version'  : project.jar.archiveVersion,
+                'Implementation-Vendor'   : mod_author,
+                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                'Timestampe'              : System.currentTimeMillis(),
+                'Built-On-Java'           : "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
+                'Build-On-Minecraft'      : minecraft_version
+            ])
+        }
+    }
+
+    sourcesJar {
+        from(rootProject.file("LICENSE"))
+        from(rootProject.file("COPYING"))
+        from(rootProject.file("COPYING.LESSER"))
+        from(rootProject.file("README.md"))
+        from(rootProject.file("CHANGELOG.md"))
+    }
+
     repositories {
-        maven { url = 'https://files.minecraftforge.net/maven' }
-		maven { url = 'https://maven.parchmentmc.org' }
-        maven { url = 'https://plugins.gradle.org/m2/' }
         mavenCentral()
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath group: 'gradle.plugin.com.matthewprenger', name: 'CurseGradle', version: '1.4.0'
-		classpath group: 'org.parchmentmc', name: 'librarian', version: '1.+'
-    }
-}
 
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'com.matthewprenger.cursegradle'
-apply plugin: 'org.parchmentmc.librarian.forgegradle'
-
-version = "${mod_version}"
-group = "top.theillusivec4.curiouslights"
-archivesBaseName = "curiouslights-forge"
-
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
-
-minecraft {
-    mappings channel: 'parchment', version: '2022.03.13-1.18.2'
-	
-    runs {
-        client {
-            workingDirectory project.file('run')
-            
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', 'debug'
-
-            mods {
-                curiouslights {
-                    source sourceSets.main
-                }
-            }
+        maven {
+            name = 'Sponge / Mixin'
+            url = 'https://repo.spongepowered.org/repository/maven-public/'
         }
-
-        server {
-            workingDirectory project.file('run')
-            
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', 'debug'
-
-            mods {
-                curiouslights {
-                    source sourceSets.main
-                }
-            }
+        maven {
+            name = 'BlameJared Maven (CrT / Bookshelf)'
+            url = 'https://maven.blamejared.com'
         }
-
-        all {
-            def srgToMcpFile = project.tasks.createSrgToMcp.outputs.files[0].path
-
-            property 'net.minecraftforge.gradle.GradleStart.srg.srg-mcp', srgToMcpFile
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', srgToMcpFile
+		maven {
+            name = 'ParchmentMC'
+            url = 'https://maven.parchmentmc.org/'
+        }
+        maven {
+            name = "CurseMaven"
+            url = "https://www.cursemaven.com"
+        }
+        maven {
+            name = "C4's Maven"
+            url = "https://maven.theillusivec4.top"
+        }
+        maven {
+            name = "Modding Legacy Maven"
+            url = "https://maven.moddinglegacy.com/artifactory/modding-legacy/"
+        }
+        maven {
+            name = "TerraformersMC"
+            url = "https://maven.terraformersmc.com/"
+        }
+        maven {
+            name = "Ladysnake Libs"
+            url = "https://ladysnake.jfrog.io/artifactory/mods"
+        }
+        maven {
+            name = "LambDynamicLights"
+            url = "https://maven.gegy.dev/releases/"
         }
     }
-}
 
-repositories {
-    maven {
-        name = "CurseMaven"
-        url = "https://www.cursemaven.com"
+    tasks.withType(JavaCompile).configureEach {
+        it.options.encoding = 'UTF-8'
+        it.options.release = 17
     }
-    maven {
-        name = "C4's Maven"
-        url = "https://maven.theillusivec4.top"
-    }
-    maven {
-        name = "Modding Legacy Maven"
-        url = "https://maven.moddinglegacy.com/artifactory/modding-legacy/"
-    }
-    maven {
-        name = "Ars Nouveau"
-        url = "https://maven.blamejared.com"
-    }
-}
 
-dependencies {
-    minecraft "net.minecraftforge:forge:${forge_version}"
-
-    implementation fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
-
-    compileOnly fg.deobf("curse.maven:dlreforged-551736:${dlreforged_file}")
-    implementation fg.deobf("com.hollingsworth.ars_nouveau:ars_nouveau-1.18.2:${ars_version}")
-    compileOnly fg.deobf("curse.maven:dynamiclights-227874:${dynamiclights_file}")
-    compileOnly fg.deobf("com.legacy:lucent:${lucent_version}")
-
-    runtimeOnly fg.deobf("curse.maven:patchouli-306770:3846086")
-    runtimeOnly fg.deobf("curse.maven:geckolib-388172:4019764")
-}
-
-def replaceResources = tasks.register("replaceResources", Copy) {
-    it.outputs.upToDateWhen { false }
-
-    it.from(sourceSets.main.resources) {
-        include "META-INF/mods.toml"
-        expand 'version': version, 'mc_version_range': mc_version_range, 'forge_version_range': forge_version_range, "loader_version": loader_version
-    }
-    it.into "$buildDir/resources/main/"
-}
-
-sourceSets.main.resources.srcDir '.gpl'
-
-processResources {
-    from("CHANGELOG.md")
-    from("LICENSE")
-    from("README.md")
-    duplicatesStrategy(DuplicatesStrategy.FAIL)
-    exclude('META-INF/mods.toml')
-    configure { finalizedBy(replaceResources) }
-}
-
-jar {
-    manifest {
-        attributes(["Specification-Title"     : "Curious Lights",
-                    "Specification-Vendor"    : "C4",
-                    "Specification-Version"   : "1",
-                    "Implementation-Title"    : "Curious Lights",
-                    "Implementation-Version"  : "${getArchiveVersion()}",
-                    "Implementation-Vendor"   : "C4",
-                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")],)
-    }
-}
-
-task sourcesJar(type: Jar) {
-    archiveClassifier.set('sources')
-    from sourceSets.main.allJava
-}
-
-artifacts {
-    archives sourcesJar
-}
-
-jar.finalizedBy('reobfJar')
-
-curseforge {
-	project {
-        apiKey = findProperty('curseKey') ?: 0
-        id = "${curse_id}"
-        releaseType = "${curse_release}"
-        changelogType = 'text'
-        changelog = "Changelog: https://github.com/TheIllusiveC4/CuriousLights/blob/${changelog_link}"
-        addArtifact(sourcesJar)
-        "${curse_versions}".split(',').each {
-            addGameVersion "${it}"
-        }
-        relations {
-            requiredDependency 'curios'
-            optionalDependency 'lucent'
-            optionalDependency 'dynamic-lights'
-            optionalDependency 'dynamiclights-reforged'
-        }
+    // Disables Gradle's custom module metadata from being published to maven. The
+    // metadata includes mapped dependencies which are not reasonably consumable by
+    // other mod developers.
+    tasks.withType(GenerateModuleMetadata) {
+        enabled = false
     }
 }
