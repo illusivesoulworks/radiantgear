@@ -1,25 +1,49 @@
-# MultiLoader Template
+# Radiant Gear
+[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg?&style=flat-square)](https://www.gnu.org/licenses/lgpl-3.0)
+[![ko-fi](https://img.shields.io/badge/Support%20Me-Ko--fi-%23FF5E5B?style=flat-square)](https://ko-fi.com/C0C1NL4O)
 
-This project provides a Gradle project template that can compile mods for both Forge and Fabric using a common sourceset. This project does not require any third party libraries or dependencies.
+Radiant Gear is a mod that acts as a simple compatibility bridge between [Curios API](https://www.curseforge.com/minecraft/mc-mods/curios)
+or [Trinkets API](https://www.curseforge.com/minecraft/mc-mods/trinkets) and dynamic light mods. With this mod, items in
+accessory slots will inherit the dynamic lighting behavior defined by the dynamic lighting mod. As an example, if a held
+torch would provide dynamic lighting, then installing this mod will cause torches placed in accessory slots to also
+provide dynamic lighting.
 
-## Getting Started
+**Please note: This mod does NOT add any content or slots on its own. In order to gain more slots or assign items into
+slots, users will need to either add a mod that adds that kind of content or add it themselves.**
 
-## IntelliJ IDEA
-This guide will show how to import the MultiLoader Template into IntelliJ IDEA. The setup process is roughly equivalent to setting up Forge and Fabric independently and should be very familiar to anyone who has worked with their MDKs.
+* [Curios API Configuration](https://github.com/TheIllusiveC4/Curios/wiki/How-to-Use:-Users)
+* [Trinkets API Configuration](https://github.com/emilyploszaj/trinkets/wiki/Quick-Start-Guide)
 
-1. Clone or download this repository to your computer.
-2. Configure the project by editing the `group`, `mod_name`, `mod_author`, and `mod_id` properties in the `gradle.properties` file. You will also need to change the `rootProject.name`  property in `settings.gradle`.
-3. Open the template's root folder as a new project in IDEA. This is the folder that contains this README file and the gradlew executable.
-4. If your default JVM/JDK is not Java 16 you will encounter an error when opening the project. This error is fixed by going to `File > Settings > Build, Execution, Deployment > Build Tools > Gradle > Gradle JVM`and changing the value to a valid Java 16 JVM. You will also need to set the Project SDK to Java 16. This can be done by going to `File > Project Structure > Project SDK`. Once both have been set open the Gradle tab in IDEA and click the refresh button to reload the project.
-5. Open the Gradle tab in IDEA if it has not already been opened. Navigate to `Your Project > Common > Tasks > vanilla gradle > decompile`. Run this task to decompile Minecraft.
-6. Open the Gradle tab in IDEA if it has not already been opened. Navigate to `Your Project > Forge > Tasks > forgegradle runs > genIntellijRuns`. Run this task to set up run configurations for Forge.
-7. Open your Run/Debug Configurations. Under the Application category there should now be options to run Forge and Fabric projects. Select one of the client options and try to run it.
-8. Assuming you were able to run the game in step 7 your workspace should now be set up.
+**Compatible Mods**
+- [Dynamic Lights](https://www.curseforge.com/minecraft/mc-mods/dynamic-lights)
+- [Lucent](https://www.curseforge.com/minecraft/mc-mods/lucent)
+- [Magnesium/Rubidium Dynamic Lights](https://www.curseforge.com/minecraft/mc-mods/dynamiclights-reforged)
+- [Ars Nouveau](https://www.curseforge.com/minecraft/mc-mods/ars-nouveau)
+- [LambDynamicLights](https://www.curseforge.com/minecraft/mc-mods/lambdynamiclights)
 
-### Eclipse
-While it is possible to use this template in Eclipse it is not recommended. During the development of this template multiple critical bugs and quirks related to Eclipse were found at nearly every level of the required build tools. While we continue to work with these tools to report and resolve issues support for projects like these are not there yet. For now Eclipse is considered unsupported by this project. The development cycle for build tools is notoriously slow so there are no ETAs available.
+Note: This mod's sidedness depends on the dynamic lighting mod used. For example, if using Lucent then this mod is
+client-side only because Lucent is client-side only. On the other hand, if using Dynamic Lights then this mod is
+required on both client and server because Dynamic Lights is required on both as well.
 
-## Development Guide
-When using this template the majority of your mod is developed in the Common project. The Common project is compiled against the vanilla game and is used to hold code that is shared between the different loader-specific versions of your mod. The Common project has no knowledge or access to ModLoader specific code, apis, or concepts. Code that requires something from a specific loader must be done through the project that is specific to that loader, such as the Forge or Fabric project.
+## Downloads
+**CurseForge**
+- [![](http://cf.way2muchnoise.eu/short_radiant-gear_downloads%20on%20Forge.svg)](https://www.curseforge.com/minecraft/mc-mods/radiant-gear/files) [![](http://cf.way2muchnoise.eu/versions/radiant-gear.svg)](https://www.curseforge.com/minecraft/mc-mods/radiant-gear)
+- [![](http://cf.way2muchnoise.eu/short_radiant-gear-fabric_downloads%20on%20Forge.svg)](https://www.curseforge.com/minecraft/mc-mods/radiant-gear-fabric/files) [![](http://cf.way2muchnoise.eu/versions/curious-lights.svg)](https://www.curseforge.com/minecraft/mc-mods/radiant-gear-fabric)
 
-Loader specific projects such as the Forge and Fabric project are used to load the Common project into the game. These projects also define code that is specific to that loader. Loader specific projects can access all of the code in the Common project. It is important to remember that the Common project can not access code from loader specific projects.
+## Support
+
+Please report all bugs, issues, and feature requests to the [issue tracker](https://github.com/TheIllusiveC4/CuriousLights/issues).
+
+For non-technical support and questions, join the developer's [Discord](https://discord.gg/JWgrdwt).
+
+## License
+
+All source code and assets are licensed under LGPL 3.0.
+
+## Donations
+
+Donations to the developer can be sent through [Ko-fi](https://ko-fi.com/C0C1NL4O).
+
+## Affiliates
+
+[![BisectHosting](https://i.ibb.co/1G4QPdc/bh-illusive.png)](https://bisecthosting.com/illusive)
