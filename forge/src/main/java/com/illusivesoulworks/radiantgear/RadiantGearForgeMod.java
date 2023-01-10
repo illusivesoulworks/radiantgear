@@ -19,6 +19,7 @@ package com.illusivesoulworks.radiantgear;
 
 import com.illusivesoulworks.radiantgear.integration.arsnouveau.ArsNouveauModule;
 import com.illusivesoulworks.radiantgear.integration.dynamiclights.DynamicLightsModule;
+import com.illusivesoulworks.radiantgear.integration.dynamiclightsreforged.DLReforgedModule;
 import java.util.Objects;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.IExtensionPoint;
@@ -34,11 +35,13 @@ import net.minecraftforge.network.NetworkConstants;
 public class RadiantGearForgeMod {
 
   private static boolean isDynamicLightsLoaded = false;
+  private static boolean isDLReforgedLoaded = false;
   private static boolean isArsNouveauLoaded = false;
 
   public RadiantGearForgeMod() {
     ModList modList = ModList.get();
     isDynamicLightsLoaded = modList.isLoaded("dynamiclights");
+    isDLReforgedLoaded = modList.isLoaded("dynamiclightsreforged");
     isArsNouveauLoaded = modList.isLoaded("ars_nouveau");
     IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
     eventBus.addListener(this::setup);
@@ -58,6 +61,10 @@ public class RadiantGearForgeMod {
   }
 
   private void clientSetup(final FMLClientSetupEvent evt) {
+
+    if (isDLReforgedLoaded) {
+      DLReforgedModule.setup();
+    }
 
     if (isArsNouveauLoaded) {
       ArsNouveauModule.setup();

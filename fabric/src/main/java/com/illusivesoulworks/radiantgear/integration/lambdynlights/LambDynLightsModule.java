@@ -53,11 +53,13 @@ public class LambDynLightsModule {
           DynamicLightHandlers.registerDynamicLightHandler(type, entity1 -> {
             if (entity1 instanceof LivingEntity livingEntity1) {
               AtomicInteger luminance = new AtomicInteger(0);
-              for (Tuple<SlotReference, ItemStack> slotReferenceItemStackTuple : trinketComponent.getAllEquipped()) {
-                ItemStack stack = slotReferenceItemStackTuple.getB();
-                luminance.set(Math.max(luminance.get(),
-                    LambDynLights.getLuminanceFromItemStack(stack, livingEntity1.isInWater())));
-              }
+              TrinketsApi.getTrinketComponent(livingEntity1).ifPresent(actualTrinketComponent -> {
+                for (Tuple<SlotReference, ItemStack> slotReferenceItemStackTuple : actualTrinketComponent.getAllEquipped()) {
+                  ItemStack stack = slotReferenceItemStackTuple.getB();
+                  luminance.set(Math.max(luminance.get(),
+                      LambDynLights.getLuminanceFromItemStack(stack, livingEntity1.isInWater())));
+                }
+              });
               return luminance.get();
             }
             return 0;
