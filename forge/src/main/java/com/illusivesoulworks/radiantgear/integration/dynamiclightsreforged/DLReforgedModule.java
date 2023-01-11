@@ -17,50 +17,35 @@
 
 package com.illusivesoulworks.radiantgear.integration.dynamiclightsreforged;
 
-import com.illusivesoulworks.radiantgear.RadiantGearConstants;
+import com.illusivesoulworks.radiantgear.client.BaseLambDynLightsModule;
 import dev.lambdaurora.lambdynlights.LambDynLights;
 import dev.lambdaurora.lambdynlights.api.DynamicLightHandlers;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
-import top.theillusivec4.curios.api.CuriosApi;
 
-public class DLReforgedModule {
-
-  private static final Set<EntityType<?>> PROCESSED = new HashSet<>();
+public class DLReforgedModule extends BaseLambDynLightsModule {
 
   public static void setup() {
-    MinecraftForge.EVENT_BUS.addListener(DLReforgedModule::entityJoin);
+    DLReforgedModule module = new DLReforgedModule();
+    MinecraftForge.EVENT_BUS.addListener(module::entityJoin);
   }
 
-  private static void entityJoin(final EntityJoinLevelEvent evt) {
+  private void entityJoin(final EntityJoinLevelEvent evt) {
+    this.registerEntity(evt.getEntity(), evt.getLevel());
+  }
 
-    if (evt.getLevel().isClientSide() && evt.getEntity() instanceof LivingEntity livingEntity) {
-      EntityType<?> type = livingEntity.getType();
+  @Override
+  protected int getLuminance(ItemStack stack, boolean isInWater) {
+    return LambDynLights.getLuminanceFromItemStack(stack, isInWater);
+  }
 
-      if (!PROCESSED.contains(type) &&
-          CuriosApi.getCuriosHelper().getCuriosHandler(livingEntity).isPresent()) {
-        PROCESSED.add(type);
-        RadiantGearConstants.LOG.debug("Registering curio lights for " + type);
-        DynamicLightHandlers.registerDynamicLightHandler(type, entity -> {
-          if (entity instanceof LivingEntity livingEntity1) {
-            AtomicInteger luminance = new AtomicInteger(0);
-            CuriosApi.getCuriosHelper().getEquippedCurios(livingEntity1).ifPresent(items -> {
-              for (int i = 0; i < items.getSlots(); i++) {
-                luminance.set(Math.max(luminance.get(),
-                    LambDynLights.getLuminanceFromItemStack(items.getStackInSlot(i),
-                        livingEntity1.isUnderWater())));
-              }
-            });
-            return luminance.get();
-          }
-          return 0;
-        });
-      }
-    }
+  @Override
+  protected void registerDynamicLightHandler(EntityType<?> type,
+                                             Function<Entity, Integer> handler) {
+    DynamicLightHandlers.registerDynamicLightHandler(type, handler::apply);
   }
 }
