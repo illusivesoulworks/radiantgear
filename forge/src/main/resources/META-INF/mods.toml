@@ -27,6 +27,6 @@ ${mod_description}
 [[dependencies.radiantgear]]
     modId="curios"
     mandatory=true
-    versionRange="${curios_version_range}"
+    versionRange="[0,)"
     ordering="NONE"
     side="BOTH"
