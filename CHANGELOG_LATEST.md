@@ -4,4 +4,4 @@ This is a copy of the changelog for the most recent version. For the full versio
 
 ## [2.1.1+1.20.1] - 2023.08.03
 ### Fixed
-- Fixed Magnesium/Rubidium Dynamic Lights integration [#14](https://github.com/illusivesoulworks/radiantgear/issues/14)
+- [Forge] Fixed Magnesium/Rubidium Dynamic Lights integration [#14](https://github.com/illusivesoulworks/radiantgear/issues/14)
