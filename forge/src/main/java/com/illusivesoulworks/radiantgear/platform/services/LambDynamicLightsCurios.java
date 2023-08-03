@@ -10,7 +10,7 @@ public class LambDynamicLightsCurios implements ILambDynamicLights {
 
   @Override
   public boolean hasAccessories(LivingEntity livingEntity) {
-    return CuriosApi.getCuriosHelper().getCuriosHandler(livingEntity).isPresent();
+    return true;
   }
 
   @Override
