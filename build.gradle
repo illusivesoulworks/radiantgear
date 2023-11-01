@@ -99,7 +99,7 @@ subprojects {
 
 def publishDiscord() {
     try {
-        def cfLinks = new StringJoiner('\\\\n')
+        def cfLinks = new StringJoiner('\\n')
 
         if (project(':fabric').hasProperty('curse_link')) {
             cfLinks.add("[Fabric](${project(':fabric').findProperty('curse_link')})")
@@ -112,21 +112,29 @@ def publishDiscord() {
         if (project(':quilt').hasProperty('curse_link')) {
             cfLinks.add("[Quilt](${project(':quilt').findProperty('curse_link')})")
         }
-        def modrinthLinks = new StringJoiner('\\\\n')
+        def modrinthLinks = new StringJoiner('\\n')
 
         if (project(':fabric').hasProperty('modrinth_link')) {
-            cfLinks.add("[Fabric](${project(':fabric').findProperty('modrinth_link')})")
+            modrinthLinks.add("[Fabric](${project(':fabric').findProperty('modrinth_link')})")
         }
 
         if (project(':forge').hasProperty('modrinth_link')) {
-            cfLinks.add("[Forge](${project(':forge').findProperty('modrinth_link')})")
+            modrinthLinks.add("[Forge](${project(':forge').findProperty('modrinth_link')})")
         }
 
         if (project(':quilt').hasProperty('modrinth_link')) {
-            cfLinks.add("[Quilt](${project(':quilt').findProperty('modrinth_link')})")
+            modrinthLinks.add("[Quilt](${project(':quilt').findProperty('modrinth_link')})")
         }
         println(cfLinks)
         println(modrinthLinks)
+        def changelog = file("CHANGELOG_LATEST.md").getText()
+        changelog = changelog.substring(changelog.indexOf("##"))
+        changelog = changelog.replaceAll("\n","\\\\n").replaceAll("\"","\\\\\"")
+
+        if (changelog.length() >= 1024) {
+            changelog = changelog.substring(0, changelog.length() - 100)
+            changelog = changelog + "...[(See more)](https://github.com/illusivesoulworks/radiantgear/blob/1.20.x/CHANGELOG.md)"
+        }
         final String message = """
             {
               "embeds": [
@@ -150,7 +158,7 @@ def publishDiscord() {
                     },
                     {
                       "name": "Changelog",
-                      "value": "${file("CHANGELOG_LATEST.md").text.replaceAll("\n","\\\\n")}"
+                      "value": "${changelog}"
                     }
                   ],
                   "thumbnail": {
