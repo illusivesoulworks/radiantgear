@@ -2,8 +2,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 This is a copy of the changelog for the most recent version. For the full version history, go [here](https://github.com/TheIllusiveC4/CuriousLights/blob/1.19.x/CHANGELOG.md).
 
-## [2.0.1+1.19.2] - 2023.01.09
+## [2.0.2+1.19.2] - 2023.10.31
 ### Added
-- Re-added Magnesium/Rubidium Dynamic Lights support [#10](https://github.com/TheIllusiveC4/CuriousLights/issues/10)
-### Fixed
-- Fixed LambDynamicLights support failing after switching worlds in a single session
+- Added RyoamicLights support [#16](https://github.com/illusivesoulworks/radiantgear/issues/16)

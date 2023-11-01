@@ -97,6 +97,7 @@ dependencies {
     compileOnly fg.deobf("com.hollingsworth.ars_nouveau:ars_nouveau-1.19.2:${ars_version}")
     compileOnly fg.deobf("curse.maven:dynamiclights-227874:${dynamiclights_file}")
     compileOnly fg.deobf("curse.maven:dlreforged-551736:${dlreforged_file}")
+    compileOnly fg.deobf("curse.maven:ryoamic-913587:${ryoamic_file}")
     implementation fg.deobf("curse.maven:lucent-493280:${lucent_file}")
 
     runtimeOnly fg.deobf("curse.maven:patchouli-306770:3936481")

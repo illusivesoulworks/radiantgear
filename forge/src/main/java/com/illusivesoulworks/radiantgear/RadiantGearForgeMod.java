@@ -37,12 +37,14 @@ public class RadiantGearForgeMod {
   private static boolean isDynamicLightsLoaded = false;
   private static boolean isDLReforgedLoaded = false;
   private static boolean isArsNouveauLoaded = false;
+  private static boolean isRyoamicLoaded = false;
 
   public RadiantGearForgeMod() {
     ModList modList = ModList.get();
     isDynamicLightsLoaded = modList.isLoaded("dynamiclights");
     isDLReforgedLoaded = modList.isLoaded("dynamiclightsreforged");
     isArsNouveauLoaded = modList.isLoaded("ars_nouveau");
+    isRyoamicLoaded = modList.isLoaded("ryoamiclights");
     IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
     eventBus.addListener(this::setup);
     eventBus.addListener(this::clientSetup);
@@ -62,7 +64,7 @@ public class RadiantGearForgeMod {
 
   private void clientSetup(final FMLClientSetupEvent evt) {
 
-    if (isDLReforgedLoaded) {
+    if (isDLReforgedLoaded || isRyoamicLoaded) {
       DLReforgedModule.setup();
     }
 
