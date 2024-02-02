@@ -21,6 +21,8 @@ import com.illusivesoulworks.radiantgear.integration.arsnouveau.ArsNouveauModule
 import com.illusivesoulworks.radiantgear.integration.dynamiclights.DynamicLightsModule;
 import com.illusivesoulworks.radiantgear.integration.dynamiclightsreforged.DLReforgedModule;
 import java.util.Objects;
+
+import com.illusivesoulworks.radiantgear.integration.embeddiumplus.EmbeddiumPlusModule;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.IExtensionPoint;
 import net.minecraftforge.fml.ModList;
@@ -38,6 +40,7 @@ public class RadiantGearForgeMod {
   private static boolean isDLReforgedLoaded = false;
   private static boolean isArsNouveauLoaded = false;
   private static boolean isRyoamicLoaded = false;
+  private static boolean isEmbeddiumPlusLoaded = false;
 
   public RadiantGearForgeMod() {
     ModList modList = ModList.get();
@@ -45,6 +48,7 @@ public class RadiantGearForgeMod {
     isDLReforgedLoaded = modList.isLoaded("dynamiclightsreforged");
     isArsNouveauLoaded = modList.isLoaded("ars_nouveau");
     isRyoamicLoaded = modList.isLoaded("ryoamiclights");
+    isEmbeddiumPlusLoaded = modList.isLoaded("embeddiumplus");
     IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
     eventBus.addListener(this::setup);
     eventBus.addListener(this::clientSetup);
@@ -66,6 +70,10 @@ public class RadiantGearForgeMod {
 
     if (isDLReforgedLoaded || isRyoamicLoaded) {
       DLReforgedModule.setup();
+    }
+
+    if (isEmbeddiumPlusLoaded){
+      EmbeddiumPlusModule.setup();
     }
 
     if (isArsNouveauLoaded) {
