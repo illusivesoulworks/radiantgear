@@ -99,7 +99,8 @@ dependencies {
     compileOnly fg.deobf("curse.maven:dlreforged-551736:${dlreforged_file}")
     compileOnly fg.deobf("curse.maven:ryoamic-913587:${ryoamic_file}")
     compileOnly fg.deobf("curse.maven:lucent-493280:${lucent_file}")
-    compileOnly fg.deobf("curse.maven:embeddiumplus-931925:5026257")
+    compileOnly fg.deobf("curse.maven:embeddiumplus-931925:${embeddiumplus_file}")
+    compileOnly fg.deobf("curse.maven:ryoamiclights-913587:${ryoamic_file}")
 
 //    runtimeOnly fg.deobf("curse.maven:patchouli-306770:3936481")
 //    runtimeOnly fg.deobf("curse.maven:geckolib-388172:4019767")
