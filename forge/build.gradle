@@ -98,10 +98,11 @@ dependencies {
     compileOnly fg.deobf("curse.maven:dynamiclights-227874:${dynamiclights_file}")
     compileOnly fg.deobf("curse.maven:dlreforged-551736:${dlreforged_file}")
     compileOnly fg.deobf("curse.maven:ryoamic-913587:${ryoamic_file}")
-    implementation fg.deobf("curse.maven:lucent-493280:${lucent_file}")
+    compileOnly fg.deobf("curse.maven:lucent-493280:${lucent_file}")
+    compileOnly fg.deobf("curse.maven:embeddiumplus-931925:5026257")
 
-    runtimeOnly fg.deobf("curse.maven:patchouli-306770:3936481")
-    runtimeOnly fg.deobf("curse.maven:geckolib-388172:4019767")
+//    runtimeOnly fg.deobf("curse.maven:patchouli-306770:3936481")
+//    runtimeOnly fg.deobf("curse.maven:geckolib-388172:4019767")
 }
 
 tasks.withType(JavaCompile) {
