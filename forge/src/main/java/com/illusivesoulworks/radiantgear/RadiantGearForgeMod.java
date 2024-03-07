@@ -20,9 +20,8 @@ package com.illusivesoulworks.radiantgear;
 import com.illusivesoulworks.radiantgear.integration.arsnouveau.ArsNouveauModule;
 import com.illusivesoulworks.radiantgear.integration.dynamiclights.DynamicLightsModule;
 import com.illusivesoulworks.radiantgear.integration.dynamiclightsreforged.DLReforgedModule;
-import java.util.Objects;
-
 import com.illusivesoulworks.radiantgear.integration.embeddiumplus.EmbeddiumPlusModule;
+import java.util.Objects;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.IExtensionPoint;
 import net.minecraftforge.fml.ModList;
@@ -48,7 +47,9 @@ public class RadiantGearForgeMod {
     isDLReforgedLoaded = modList.isLoaded("dynamiclightsreforged");
     isArsNouveauLoaded = modList.isLoaded("ars_nouveau");
     isRyoamicLoaded = modList.isLoaded("ryoamiclights");
-    isEmbeddiumPlusLoaded = modList.isLoaded("embeddiumplus");
+    // Embeddium++ removed their dynamic lighting in 1.2.4 but this mod should still be able to load
+    isEmbeddiumPlusLoaded = modList.isLoaded("embeddiumplus") &&
+        modList.getModFileById("embeddiumplus").versionString().compareTo("1.2.4") < 0;
     IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
     eventBus.addListener(this::setup);
     eventBus.addListener(this::clientSetup);
@@ -72,7 +73,7 @@ public class RadiantGearForgeMod {
       DLReforgedModule.setup();
     }
 
-    if (isEmbeddiumPlusLoaded){
+    if (isEmbeddiumPlusLoaded) {
       EmbeddiumPlusModule.setup();
     }
 

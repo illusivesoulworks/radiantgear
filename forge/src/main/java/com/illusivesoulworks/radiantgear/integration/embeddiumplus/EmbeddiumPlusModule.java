@@ -19,6 +19,7 @@ package com.illusivesoulworks.radiantgear.integration.embeddiumplus;
 
 import com.illusivesoulworks.radiantgear.client.BaseLambDynLightsModule;
 
+import me.srrapero720.embeddiumplus.EmbeddiumPlus;
 import me.srrapero720.embeddiumplus.foundation.dynlights.DynLightsPlus;
 import me.srrapero720.embeddiumplus.foundation.dynlights.DynLightsHandlers;
 
