@@ -83,9 +83,10 @@ dependencies {
 
     compileOnly fg.deobf("com.hollingsworth.ars_nouveau:ars_nouveau-1.19.2:${ars_version}")
     compileOnly fg.deobf("curse.maven:dynamiclights-227874:${dynamiclights_file}")
-    implementation fg.deobf("curse.maven:dlreforged-551736:${dlreforged_file}")
-    implementation fg.deobf("curse.maven:embeddiumplus-931925:${embeddiumplus_file}")
+    compileOnly fg.deobf("curse.maven:dlreforged-551736:${dlreforged_file}")
+    compileOnly fg.deobf("curse.maven:embeddiumplus-931925:${embeddiumplus_file}")
     compileOnly fg.deobf("curse.maven:lucent-493280:${lucent_file}")
+    compileOnly fg.deobf("curse.maven:ryoamiclights-913587:${ryoamic_file}")
 
 //    runtimeOnly fg.deobf("curse.maven:patchouli-306770:3936481")
 //    runtimeOnly fg.deobf("curse.maven:geckolib-388172:4019767")

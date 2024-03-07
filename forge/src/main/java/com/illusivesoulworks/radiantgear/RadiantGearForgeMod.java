@@ -21,6 +21,7 @@ import com.illusivesoulworks.radiantgear.integration.arsnouveau.ArsNouveauModule
 import com.illusivesoulworks.radiantgear.integration.dynamiclights.DynamicLightsModule;
 import com.illusivesoulworks.radiantgear.integration.dynamiclightsreforged.DLReforgedModule;
 import com.illusivesoulworks.radiantgear.integration.embeddiumplus.EmbeddiumPlusModule;
+import com.illusivesoulworks.radiantgear.integration.ryoamiclights.RyoamicModule;
 import java.util.Objects;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.IExtensionPoint;
@@ -69,8 +70,12 @@ public class RadiantGearForgeMod {
 
   private void clientSetup(final FMLClientSetupEvent evt) {
 
-    if (isDLReforgedLoaded || isRyoamicLoaded) {
+    if (isDLReforgedLoaded) {
       DLReforgedModule.setup();
+    }
+
+    if (isRyoamicLoaded) {
+      RyoamicModule.setup();
     }
 
     if (isEmbeddiumPlusLoaded) {

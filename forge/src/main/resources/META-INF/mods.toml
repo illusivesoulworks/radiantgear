@@ -30,3 +30,9 @@ ${mod_description}
     versionRange="[0,)"
     ordering="NONE"
     side="BOTH"
+[[dependencies.radiantgear]]
+    modId="ryoamiclights"
+    mandatory=false
+    versionRange="[0.2.0,)"
+    ordering="NONE"
+    side="BOTH"
