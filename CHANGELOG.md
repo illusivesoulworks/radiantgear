@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [2.2.0+1.20.1] - 2024.12.27
+### Added
+- [Forge] Updated Sodium/Embeddium Dynamic Lights support [#33](https://github.com/illusivesoulworks/radiantgear/issues/33)
+### Fixed
+- [Forge] Fixed crash when loaded with Dynamic Lights by Tschipcraft
+
 ## [2.1.6+1.20.1] - 2024.05.30
 ### Fixed
  - [Fabric/Quilt] Added RyoamicLights support [#29](https://github.com/illusivesoulworks/radiantgear/pull/29)
