@@ -49,6 +49,7 @@ public class RadiantGearForgeMod {
     isDLReforgedLoaded = modList.isLoaded("dynamiclightsreforged");
     isArsNouveauLoaded = modList.isLoaded("ars_nouveau");
     isRyoamicLoaded = modList.isLoaded("ryoamiclights");
+    isSodiumDynamicLights = modList.isLoaded("sodiumdynamiclights");
     // Embeddium++ removed their dynamic lighting in 1.2.4 but this mod should still be able to load
     if (modList.isLoaded("embeddiumplus")) {
       DefaultArtifactVersion maxVersion = new DefaultArtifactVersion("1.2.4");
@@ -89,6 +90,10 @@ public class RadiantGearForgeMod {
 
     if (isArsNouveauLoaded) {
       ArsNouveauModule.setup();
+    }
+
+    if (isSodiumDynamicLights) {
+      SDLModule.setup();
     }
   }
 
