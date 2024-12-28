@@ -32,13 +32,14 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.forgespi.language.IModInfo;
 import net.minecraftforge.network.NetworkConstants;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 
 @Mod(RadiantGearConstants.MOD_ID)
 public class RadiantGearForgeMod {
 
-  private static boolean isDynamicLightsLoaded = false;
+  private static boolean isAtomicDLLoaded = false;
   private static boolean isDLReforgedLoaded = false;
   private static boolean isArsNouveauLoaded = false;
   private static boolean isRyoamicLoaded = false;
@@ -47,7 +48,6 @@ public class RadiantGearForgeMod {
 
   public RadiantGearForgeMod() {
     ModList modList = ModList.get();
-    isDynamicLightsLoaded = modList.isLoaded("dynamiclights");
     isDLReforgedLoaded = modList.isLoaded("dynamiclightsreforged");
     isArsNouveauLoaded = modList.isLoaded("ars_nouveau");
     isRyoamicLoaded = modList.isLoaded("ryoamiclights");
@@ -58,6 +58,20 @@ public class RadiantGearForgeMod {
       DefaultArtifactVersion currentVersion =
           new DefaultArtifactVersion(modList.getModFileById("embeddiumplus").versionString());
       isEmbeddiumPlusLoaded = currentVersion.compareTo(maxVersion) < 0;
+    }
+
+    if (modList.isLoaded("dynamiclights")) {
+      // There are two dynamic lights mods with the same modId so differentiation is needed
+      for (IModInfo mod : modList.getModFileById("dynamiclights").getFile()
+          .getModFileInfo().getMods()) {
+        mod.getConfig().getConfigElement("authors").ifPresent(element -> {
+
+          if (element.equals("AtomicStryker")) {
+            isAtomicDLLoaded = true;
+          }
+        });
+        break;
+      }
     }
     IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
     eventBus.addListener(this::setup);
@@ -71,7 +85,7 @@ public class RadiantGearForgeMod {
 
   private void setup(final FMLCommonSetupEvent evt) {
 
-    if (isDynamicLightsLoaded) {
+    if (isAtomicDLLoaded) {
       DynamicLightsModule.setup();
     }
   }
@@ -101,7 +115,7 @@ public class RadiantGearForgeMod {
 
   private String getRemoteVersion(ModLoadingContext context) {
 
-    if (isDynamicLightsLoaded) {
+    if (isAtomicDLLoaded) {
       return context.getActiveContainer().getModInfo().getVersion().toString();
     }
     return NetworkConstants.IGNORESERVERONLY;
@@ -109,7 +123,7 @@ public class RadiantGearForgeMod {
 
   private boolean acceptsServer(ModLoadingContext context, String incoming) {
 
-    if (isDynamicLightsLoaded) {
+    if (isAtomicDLLoaded) {
       return Objects.equals(incoming,
           context.getActiveContainer().getModInfo().getVersion().toString());
     }
