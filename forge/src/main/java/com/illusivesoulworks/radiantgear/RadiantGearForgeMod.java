@@ -22,6 +22,7 @@ import com.illusivesoulworks.radiantgear.integration.dynamiclights.DynamicLights
 import com.illusivesoulworks.radiantgear.integration.dynamiclightsreforged.DLReforgedModule;
 import com.illusivesoulworks.radiantgear.integration.embeddiumplus.EmbeddiumPlusModule;
 import com.illusivesoulworks.radiantgear.integration.ryoamiclights.RyoamicModule;
+import com.illusivesoulworks.radiantgear.integration.sodiumdynamiclights.SDLModule;
 import java.util.Objects;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.IExtensionPoint;
@@ -42,6 +43,7 @@ public class RadiantGearForgeMod {
   private static boolean isArsNouveauLoaded = false;
   private static boolean isRyoamicLoaded = false;
   private static boolean isEmbeddiumPlusLoaded = false;
+  private static boolean isSDLLoaded = false;
 
   public RadiantGearForgeMod() {
     ModList modList = ModList.get();
@@ -49,7 +51,7 @@ public class RadiantGearForgeMod {
     isDLReforgedLoaded = modList.isLoaded("dynamiclightsreforged");
     isArsNouveauLoaded = modList.isLoaded("ars_nouveau");
     isRyoamicLoaded = modList.isLoaded("ryoamiclights");
-    isSodiumDynamicLights = modList.isLoaded("sodiumdynamiclights");
+    isSDLLoaded = modList.isLoaded("sodiumdynamiclights");
     // Embeddium++ removed their dynamic lighting in 1.2.4 but this mod should still be able to load
     if (modList.isLoaded("embeddiumplus")) {
       DefaultArtifactVersion maxVersion = new DefaultArtifactVersion("1.2.4");
@@ -92,7 +94,7 @@ public class RadiantGearForgeMod {
       ArsNouveauModule.setup();
     }
 
-    if (isSodiumDynamicLights) {
+    if (isSDLLoaded) {
       SDLModule.setup();
     }
   }
